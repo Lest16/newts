@@ -130,7 +130,7 @@ class DriverAdapter implements Iterable<Results.Row<Sample>>, Iterator<Results.R
 
     private static Sample getSample(com.datastax.driver.core.Row row) {
         ValueType<?> value = getValue(row);
-        return new Sample(getTimestamp(row), getResource(row), getMetricName(row), value.getType(), value, getAttributes(row));
+        return new Sample(getTimestamp(row), getResource(row), getMetricName(row), value.getType(), value, getAttributes(row), getTimeToLive(row));
     }
 
     private static ValueType<?> getValue(com.datastax.driver.core.Row row) {
@@ -143,6 +143,10 @@ class DriverAdapter implements Iterable<Results.Row<Sample>>, Iterator<Results.R
 
     private static Timestamp getTimestamp(com.datastax.driver.core.Row row) {
         return Timestamp.fromEpochMillis(row.getTimestamp(SchemaConstants.F_COLLECTED).getTime());
+    }
+    
+    private static int getTimeToLive(com.datastax.driver.core.Row row) {
+        return row.getInt(SchemaConstants.F_TIMETOLIVE);
     }
 
     private static Resource getResource(com.datastax.driver.core.Row row) {

@@ -44,11 +44,12 @@ public class SampleDTO {
     private final Number m_value;
     private final Map<String, String> m_attributes;
     private final Context m_context;
+    private final int m_timeToLive;
 
     @JsonCreator
     public SampleDTO(@JsonProperty("timestamp") long timestamp, @JsonProperty("resource") ResourceDTO resource,
             @JsonProperty("name") String name, @JsonProperty("type") MetricType type, @JsonProperty("value") Number value,
-            @JsonProperty("attributes") Map<String, String> attributes, @JsonProperty("context") String context) {
+            @JsonProperty("attributes") Map<String, String> attributes, @JsonProperty("context") String context, @JsonProperty("time-to-live") int timeToLive) {
         m_timestamp = checkNotNull(timestamp, "m_timestamp argument");
         m_resource = checkNotNull(resource, "m_resource argument");
         m_name = checkNotNull(name, "m_name argument");
@@ -56,6 +57,7 @@ public class SampleDTO {
         m_value = checkNotNull(value, "m_value argument");
         m_attributes = attributes;
         m_context = context != null ? new Context(context) : Context.DEFAULT_CONTEXT;
+        m_timeToLive = timeToLive;
     }
 
     public long getTimestamp() {
@@ -84,5 +86,9 @@ public class SampleDTO {
 
     public Context getContext() {
         return m_context;
+    }
+    
+    public int getTimeToLive() {
+        return m_timeToLive;
     }
 }

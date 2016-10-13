@@ -33,7 +33,8 @@ public class SampleDTOSerializer extends JsonSerializer<SampleDTO> {
         jgen.writeNumberField("timestamp", value.getTimestamp());
         jgen.writeStringField("type", value.getType().toString());
         jgen.writeObjectField("value", value.getValue());
-
+        jgen.writeObjectField("time-to-live", value.getTimeToLive());
+        
         // Since attributes is optional, be compact and omit from JSON output when unused.
         if (value.getAttributes() != null && !value.getAttributes().isEmpty()) {
             jgen.writeObjectField("attributes", value.getAttributes());

@@ -57,7 +57,8 @@ class Transform {
                         input.getName(),
                         input.getType(),
                         ValueType.compose(input.getValue(), input.getType()),
-                        input.getAttributes());
+                        input.getAttributes(),
+                        input.getTimeToLive());
             }
         };
     }
@@ -130,7 +131,8 @@ class Transform {
                                 input.getType(),
                                 input.getValue(),
                                 input.getAttributes(),
-                                input.getContext().getId());
+                                input.getContext().getId(),
+                                input.getTimeToLive());
                     }
                 });
             }

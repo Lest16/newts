@@ -257,7 +257,8 @@ public class CassandraSampleRepository implements SampleRepository {
                     .value(SchemaConstants.F_RESOURCE, m.getResource().getId())
                     .value(SchemaConstants.F_COLLECTED, m.getTimestamp().asMillis())
                     .value(SchemaConstants.F_METRIC_NAME, m.getName())
-                    .value(SchemaConstants.F_VALUE, ValueType.decompose(m.getValue()));
+                    .value(SchemaConstants.F_VALUE, ValueType.decompose(m.getValue()))
+                    .value(SchemaConstants.F_TIMETOLIVE, m.getTimeToLive());
 
             // Inserting a column with a null value inserts a tombstone (a deletion marker); Skip the attributes
             // for any sample that has not specified them.
@@ -268,7 +269,7 @@ public class CassandraSampleRepository implements SampleRepository {
             // Use the context specific consistency level
             insert.setConsistencyLevel(m_contextConfigurations.getWriteConsistency(m.getContext()));
 
-            batch.add(insert.using(ttl(ttl)));
+            batch.add(insert.using(ttl(m.getTimeToLive())));
         }
 
         try {

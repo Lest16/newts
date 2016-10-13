@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<project name="newts">
+	<target name="path">
+		<property name="toDir" value="..\newts-bin" />
+		<property name="baseDir" value="..\" />
+	</target>
+	
+	<target name="make.dir" description="Make a dir" depends="path">
+		<echo>Make a directory</echo>
+		<mkdir dir="${toDir}" />
+	</target>
+	
+	<target name="copy" description="Copy jar file" depends="path">
+		<echo>Copy *.jar files</echo>	
+		<copy flatten="true" todir="${toDir}" overwrite="true">
+			<fileset dir="${baseDir}">
+				<include name="**/newts*.jar"/>
+			</fileset>
+			<mapper>
+			        <chainedmapper>
+			            <flattenmapper/>
+			        	<globmapper from="*-SNAPSHOT.jar" to="*.jar"/>
+			        </chainedmapper>
+			</mapper>
+		</copy>
+	</target>
+</project>

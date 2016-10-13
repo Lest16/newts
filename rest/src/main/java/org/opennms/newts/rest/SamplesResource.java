@@ -18,7 +18,9 @@ package org.opennms.newts.rest;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -32,6 +34,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.opennms.newts.api.Context;
+import org.opennms.newts.api.MetricType;
 import org.opennms.newts.api.Resource;
 import org.opennms.newts.api.SampleRepository;
 import org.opennms.newts.api.Timestamp;
@@ -58,7 +61,13 @@ public class SamplesResource {
     @POST
     @Timed
     public Response writeSamples(Collection<SampleDTO> samples) {
-        m_sampleRepository.insert(Transform.samples(samples));
+    	ResourceDTO f = new ResourceDTO("5", new HashMap<String, String>());
+    	
+    	SampleDTO s = new SampleDTO(390009300, f, "sdg", MetricType.GAUGE, 45, new HashMap<String, String>(), "skgsjgskgs", 10);
+    	Collection<SampleDTO> k = new ArrayList<SampleDTO>();
+    	k.add(s);
+    	m_sampleRepository.insert(Transform.samples(k));
+        //m_sampleRepository.insert(Transform.samples(samples));
         return Response.status(Response.Status.CREATED).build();
     }
 

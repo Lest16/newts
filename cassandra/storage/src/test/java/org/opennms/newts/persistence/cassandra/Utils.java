@@ -128,7 +128,7 @@ class Utils {
 
         @Override
         SampleRowsBuilder element(String name, double value, Map<String, String> attrs) {
-            addElement(new Sample(getCurrentTimestamp(), getResource(), name, m_type, ValueType.compose(value, m_type), attrs));
+            addElement(new Sample(getCurrentTimestamp(), getResource(), name, m_type, ValueType.compose(value, m_type), attrs, 0));
             return this;
         }
 

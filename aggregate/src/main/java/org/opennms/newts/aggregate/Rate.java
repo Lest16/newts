@@ -94,7 +94,7 @@ class Rate implements Iterator<Row<Sample>>, Iterable<Row<Sample>> {
             value = new Gauge(sample.getValue().delta(previous.getValue()).doubleValue() / elapsed);
         }
 
-        return new Sample(sample.getTimestamp(), sample.getResource(), sample.getName(), GAUGE, value, sample.getAttributes());
+        return new Sample(sample.getTimestamp(), sample.getResource(), sample.getName(), GAUGE, value, sample.getAttributes(), sample.getTimeToLive());
     }
 
     @Override

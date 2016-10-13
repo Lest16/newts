@@ -31,23 +31,28 @@ public class Sample implements Element<ValueType<?>>, Serializable {
     private final Context m_context;
     private final Resource m_resource;
     private final String m_name;
+    private final int m_timeToLive;
     private final MetricType m_type;
     private final ValueType<?> m_value;
     private final Map<String, String> m_attributes;
 
-    public Sample(Timestamp timestamp, Resource resource, String name, MetricType type, ValueType<?> value) {
-        this(timestamp, Context.DEFAULT_CONTEXT, resource, name, type, value, null);
-    }
-
-    public Sample(Timestamp timestamp, Resource resource, String name, MetricType type, ValueType<?> value, Map<String, String> attributes) {
-        this(timestamp, Context.DEFAULT_CONTEXT, resource, name, type, value, attributes);
-    }
-
-    public Sample(Timestamp timestamp, Context context, Resource resource, String name, MetricType type, ValueType<?> value) {
-        this(timestamp, context, resource, name, type, value, null);
+    public Sample(Timestamp timestamp, Resource resource, String name, MetricType type, ValueType<?> value, int timeToLive) {
+        this(timestamp, Context.DEFAULT_CONTEXT, resource, name, type, value, null, timeToLive);
     }
     
-    public Sample(Timestamp timestamp, Context context, Resource resource, String name, MetricType type, ValueType<?> value, Map<String, String> attributes) {
+    public Sample(Timestamp timestamp, Resource resource, String name, MetricType type, ValueType<?> value) {
+        this(timestamp, Context.DEFAULT_CONTEXT, resource, name, type, value, null, 0);
+    }
+
+    public Sample(Timestamp timestamp, Resource resource, String name, MetricType type, ValueType<?> value, Map<String, String> attributes, int timeToLive) {
+        this(timestamp, Context.DEFAULT_CONTEXT, resource, name, type, value, attributes, timeToLive);
+    }
+
+    public Sample(Timestamp timestamp, Context context, Resource resource, String name, MetricType type, ValueType<?> value, int timeToLive) {
+        this(timestamp, context, resource, name, type, value, null, timeToLive);
+    }
+    
+    public Sample(Timestamp timestamp, Context context, Resource resource, String name, MetricType type, ValueType<?> value, Map<String, String> attributes, int timeToLive) {
         m_timestamp = checkNotNull(timestamp, "timestamp");
         m_context = checkNotNull(context, "context argument");
         m_resource = checkNotNull(resource, "resource");
@@ -55,10 +60,15 @@ public class Sample implements Element<ValueType<?>>, Serializable {
         m_type = checkNotNull(type, "type");
         m_value = value;
         m_attributes = attributes;
+        m_timeToLive = checkNotNull(timeToLive, "time-to-live");
     }
 
-    public Timestamp getTimestamp() {
+	public Timestamp getTimestamp() {
         return m_timestamp;
+    }
+    
+    public int getTimeToLive() {
+        return m_timeToLive;
     }
 
     public Context getContext() {
@@ -88,14 +98,15 @@ public class Sample implements Element<ValueType<?>>, Serializable {
     @Override
     public String toString() {
         return String.format(
-                "%s[timestamp=%s, context=%s, resource=%s, name=%s, type=%s, value=%s]",
+                "%s[timestamp=%s, context=%s, resource=%s, name=%s, type=%s, value=%s, time-to-live=%s]",
                 getClass().getSimpleName(),
                 getTimestamp(),
                 getContext(),
                 getResource(),
                 getName(),
                 getType(),
-                getValue());
+                getValue(),
+                getTimeToLive());
     }
 
     @Override
@@ -109,12 +120,13 @@ public class Sample implements Element<ValueType<?>>, Serializable {
                 && Objects.equal(this.m_name, other.m_name)
                 && Objects.equal(this.m_type, other.m_type)
                 && Objects.equal(this.m_value, other.m_value)
-                && Objects.equal(this.m_attributes, other.m_attributes);
+                && Objects.equal(this.m_attributes, other.m_attributes)
+        		&& Objects.equal(this.m_timeToLive, other.m_timeToLive);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(
-                this.m_timestamp, this.m_context, this.m_resource, this.m_name, m_type, this.m_value, this.m_attributes);
+                this.m_timestamp, this.m_context, this.m_resource, this.m_name, m_type, this.m_value, this.m_attributes, this.m_timeToLive);
     }
 }

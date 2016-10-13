@@ -266,7 +266,7 @@ public class NewtsReporter extends ScheduledReporter {
     }
     
     private void reportG(List<Sample> samples, Timestamp timestamp, String resource, String metricName, double val, Map<String, String> attrs) {
-        Sample s = new Sample(timestamp, resourceFor(resource), metricName, MetricType.GAUGE, gauge(val), attrs);
+        Sample s = new Sample(timestamp, resourceFor(resource), metricName, MetricType.GAUGE, gauge(val), attrs, 0);
         samples.add(s);
     }
     
